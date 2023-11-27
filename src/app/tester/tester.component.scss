@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;600&display=swap');
+
+.main-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  //background-color: pink;
+}
+
+.main-item {
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.bw-line {
+  display: flex;
+  min-width: min(600px,90vw);
+  justify-content: space-between;
+}
+
+.bw-item {
+  display: flex;
+  width: fit-content;
+  height: min(14vw,6em);
+  align-items: center;
+}
+
+.bw-item > .download {
+  font-size: min(14vw,6em);
+  display: inline-block;
+  color: #4cbb17;
+}
+
+.bw-item > .upload {
+  font-size: min(14vw,6em);
+  display: inline-block;
+  color: #ff7417;
+}
+
+.bw-item > .unity {
+  font-size: min(4vw,1.5em);
+  display: inline-block;
+  align-self: flex-end;
+}
+
+.status-box {
+  border-radius: 10px;
+  background: #E0E1E3;
+  padding: 15px 20px 15px 20px;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 2px 2px 4px 2px #999;
+  display: inline-block;
+  margin: 10px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.status-box-name {
+  font-size: 1.5em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.status-box-content {
+  font-size: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  min-width: 300px;
+}
+
+.status-box-content-line {
+  display: flex;
+}
+
+.status-box-content-line > .key {
+  text-align: left;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.status-box-content-line > .value {
+  margin-left: auto;
+  text-align: right;
+}
+
+#startButton {
+  color: white;
+  //background-image: radial-gradient(circle, rgba(75,0,130,1) 0%, rgba(99,14,135,1) 80%, rgba(120,28,140,1) 100%);
+  font-size: 1.5em;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  box-shadow: 2px 2px 4px 2px #999;
+}
+
+#startButton:disabled {
+  //background-color: grey;
+  //background-image: radial-gradient(circle, rgba(128,128,128,1) 0%, rgba(153,153,153,1) 80%, rgba(179,179,179,1) 100%);
+  font-size: 1em;
+  width: 80px;
+  height: 80px;
+}
