@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Medidor RNP</title>
+  <script>
+    window.onload = function () {
+      // similar behavior as an HTTP redirect
+      _baseUrl = new URL(location.href);
+      _baseUrl.port = (_baseUrl.protocol === 'https:') ? '443' : '80';
+      _baseUrl.pathname = '';
+      window.location.replace(_baseUrl.toString());
+    }
+  </script>
+</head>
+
+<body>
+  <p>Redirecionando...</p>
+</body>
+
+</html>
