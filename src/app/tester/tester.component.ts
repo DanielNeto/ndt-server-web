@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx-charts';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
 
 @Component({
   selector: 'app-tester',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule],
+  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent],
   templateUrl: './tester.component.html',
   styleUrl: './tester.component.scss',
   animations: [
@@ -84,7 +87,7 @@ export class TesterComponent implements OnInit {
   }
   graphLastValue: number = -1;
 
-  constructor() {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -96,17 +99,29 @@ export class TesterComponent implements OnInit {
     }
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(WarningDialogComponent)
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result) {
+        this.startTests();
+      }
+    });
+  }
+
   startTests() {
     if (typeof Worker !== 'undefined') {
       // Create a new
 
-      //console.log(location.href);
+      console.log(location.href);
       this.resetStats();
       this.resetGraph();
       this.graphLastValue = -1;
       this.stateStart();
 
-      const worker = new Worker('./tester.worker', { type: 'module' });
+      //const worker = new Worker('./tester.worker', { type: 'module' });
+      const worker = new Worker(new URL('./tester.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
 
         switch (data.cmd) {
@@ -127,7 +142,9 @@ export class TesterComponent implements OnInit {
         }
         //console.log(data.cmd);
       };
-      worker.postMessage(location.href);
+      //worker.postMessage(location.href);
+      console.log("https://rj.medidor.rnp.br");
+      worker.postMessage("https://rj.medidor.rnp.br");
 
     } else {
       // Web Workers are not supported in this environment.

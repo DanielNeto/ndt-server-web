@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>
+    Teste de velocidade da Internet
+</h1>
+
+<mat-dialog-content class="mat-typography">
+    <p>
+        Para realizar o teste, você será conectado à Measurement Lab (M-Lab) e seu endereço IP será 
+        compartilhado com eles e processado de acordo com a privacy policy dessa empresa. A M-Lab 
+        realiza o teste e disponibiliza os todos os resultados publicamente para promover a pesquisa na 
+        Internet. As informações publicadas incluem seu endereço IP e os resultados do teste, mas não 
+        incluem nenhuma outra informação sobre você como usuário da Internet.
+    </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false">Não concordo</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Concordo</button>
+</mat-dialog-actions>
