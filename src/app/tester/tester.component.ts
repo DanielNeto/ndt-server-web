@@ -99,7 +99,7 @@ export class TesterComponent implements OnInit {
     }
   }
 
-  openDialog() {
+  openWarningDialog() {
     const dialogRef = this.dialog.open(WarningDialogComponent)
 
     dialogRef.afterClosed().subscribe(result => {
@@ -143,7 +143,6 @@ export class TesterComponent implements OnInit {
         //console.log(data.cmd);
       };
       //worker.postMessage(location.href);
-      console.log("https://rj.medidor.rnp.br");
       worker.postMessage("https://rj.medidor.rnp.br");
 
     } else {

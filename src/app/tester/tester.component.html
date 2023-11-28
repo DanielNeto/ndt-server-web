@@ -1,6 +1,6 @@
 <div class="main-grid">
     <div class="main-item" style="padding-top: 50px">
-      <button (click)="openDialog()" [disabled]="displayControls.disabledButton" id="startButton" mat-fab color="primary">Iniciar<br>Teste</button>
+      <button (click)="openWarningDialog()" [disabled]="displayControls.disabledButton" id="startButton" mat-fab color="primary">Iniciar<br>Teste</button>
     </div>
     <div class="main-item" *ngIf="displayControls.showStats" @fadestatus>
       <div class="status-box">
