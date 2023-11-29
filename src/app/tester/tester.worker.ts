@@ -12,6 +12,13 @@ addEventListener('message', ({ data }) => {
 
 function startNDT(serverUrl: string) {
   var callbacks = {
+    'onstart': function (type: string) {
+      console.log('test start');
+      postMessage({
+        'cmd': 'onstart',
+        'type': type
+      });
+    },
     'onprogress': function (type: string, data: any) {
       console.log('test running');
       postMessage({

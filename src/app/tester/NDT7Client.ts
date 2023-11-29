@@ -2,6 +2,7 @@ export class NDT7Client {
 
     private _baseUrl: URL;
     public _callbacks = {
+      'onstart': function (type: string) { return false; },
       'onprogress': function (type: string, data: any) { return false; },
       'onserverinfo': function (type: string, data: any) { return false; },
       'onfinish': function (type: string) { return false; },
@@ -47,6 +48,7 @@ export class NDT7Client {
   
       sock.addEventListener("open", () => {
         testStart = Date.now();
+        this._callbacks.onstart('download');
       });
   
       sock.addEventListener("message", ({ data }) => {

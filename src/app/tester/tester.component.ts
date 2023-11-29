@@ -5,11 +5,12 @@ import { trigger, transition, animate, style } from '@angular/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-tester',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent],
+  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent, ErrorDialogComponent],
   templateUrl: './tester.component.html',
   styleUrl: './tester.component.scss',
   animations: [
@@ -100,7 +101,7 @@ export class TesterComponent implements OnInit {
   }
 
   openWarningDialog() {
-    const dialogRef = this.dialog.open(WarningDialogComponent)
+    const dialogRef = this.dialog.open(WarningDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -110,21 +111,27 @@ export class TesterComponent implements OnInit {
     });
   }
 
+  openErrorDialog() {
+    this.dialog.open(ErrorDialogComponent);
+  }
+
   startTests() {
     if (typeof Worker !== 'undefined') {
       // Create a new
 
       console.log(location.href);
-      this.resetStats();
-      this.resetGraph();
-      this.graphLastValue = -1;
-      this.stateStart();
 
       //const worker = new Worker('./tester.worker', { type: 'module' });
       const worker = new Worker(new URL('./tester.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
 
         switch (data.cmd) {
+          case 'onstart':
+            this.resetStats();
+            this.resetGraph();
+            this.graphLastValue = -1;
+            this.stateStart();
+            break;
           case 'onprogress':
             this.updateTestBW(data.type, data.data.Bytes, data.data.ElapsedTime);
             //do something with bytes and time
@@ -132,10 +139,9 @@ export class TesterComponent implements OnInit {
           case 'onfinish':
             this.updateFinalValues(data.type, data.data);
             //do something with final values
-
             break;
           case 'onerror':
-            console.error("ERROR", data.type);
+            this.openErrorDialog();
             break;
           default:
             break;
@@ -143,7 +149,7 @@ export class TesterComponent implements OnInit {
         //console.log(data.cmd);
       };
       //worker.postMessage(location.href);
-      worker.postMessage("https://rj.medidor.rnp.br");
+      worker.postMessage("http://200.159.254.239/");
 
     } else {
       // Web Workers are not supported in this environment.

@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-warning-dialog',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, MatButtonModule],
   templateUrl: './warning-dialog.component.html',
   styleUrl: './warning-dialog.component.scss'
 })
