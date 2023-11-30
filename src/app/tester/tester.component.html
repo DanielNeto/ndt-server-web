@@ -1,10 +1,10 @@
 <div class="main-grid">
     <div class="main-item" style="padding-top: 50px">
-      <button (click)="openWarningDialog()" [disabled]="displayControls.disabledButton" id="startButton" mat-fab color="primary">Iniciar<br>Teste</button>
+      <button (click)="openWarningDialog()" [disabled]="displayControls.disabledButton" id="startButton" mat-fab color="primary" [innerHTML]="'StartButton' | translate"></button>
     </div>
     <div class="main-item" *ngIf="displayControls.showStats" @fadestatus>
       <div class="status-box">
-        <div class="status-box-name">Resultado</div>
+        <div class="status-box-name">{{ 'ResultsTitle' | translate }}</div>
         <div class="status-box-content">
           <div class="status-box-content-line">
             <div class="key">Download:</div>
@@ -23,7 +23,7 @@
             <div class="value">{{jitter}} ms</div>
           </div>
           <div class="status-box-content-line">
-            <div class="key">Retransmissões:</div>
+            <div class="key">{{ 'ResultsRetransmissions' | translate }}</div>
             <div class="value">{{retransmissions}}%</div>
           </div>
           <div class="status-box-content-line">

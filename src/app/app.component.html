@@ -1,6 +1,13 @@
 <mat-toolbar [style.background]="'#024298'">
   <mat-toolbar-row>
-    <span class="center" style="color: white;">Medidor RNP</span>
+    <span class="center" style="color: white;">{{ 'SiteTitle' | translate }}</span>
+    <span class="form-inline">
+      <select class="form-control" #selectedLang (change)="switchLang(selectedLang.value)">
+        <option *ngFor="let language of translate.getLangs()" [value]="language" [selected]="language === translate.currentLang">
+          {{ language }}
+        </option>
+      </select>
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
 <app-tester></app-tester>

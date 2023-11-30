@@ -6,11 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tester',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent, ErrorDialogComponent],
+  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent, ErrorDialogComponent, TranslateModule],
   templateUrl: './tester.component.html',
   styleUrl: './tester.component.scss',
   animations: [
@@ -34,15 +35,15 @@ export class TesterComponent implements OnInit {
   view: [number, number] = [350, 300];
   legend: boolean = true;
   legendPosition: LegendPosition = LegendPosition.Below;
-  legendTitle: string = 'Legenda';
+  legendTitle: string = 'Legend';
   showLabels: boolean = true;
   animations: boolean = true;
   xAxis: boolean = false;
   yAxis: boolean = true;
   showYAxisLabel: boolean = false;
   showXAxisLabel: boolean = false;
-  xAxisLabel: string = 'Duração';
-  yAxisLabel: string = 'Banda';
+  xAxisLabel: string = 'Duration';
+  yAxisLabel: string = 'Bandwidth';
   timeline: boolean = true;
 
   colorScheme: Color = {
@@ -88,8 +89,7 @@ export class TesterComponent implements OnInit {
   }
   graphLastValue: number = -1;
 
-  constructor(public dialog: MatDialog) {
-  }
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
     let width = window.innerWidth;
