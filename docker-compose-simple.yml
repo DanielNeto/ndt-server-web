@@ -1,0 +1,91 @@
+version: '3.7'
+services:
+  ndt-server:
+    container_name: ndt-mlab
+    image: measurementlab/ndt-server:v0.20.20
+    volumes:
+      - ./certs:/certs
+      - ./html:/html
+      - ./schemas:/schemas
+      - ./resultsdir:/resultsdir
+    cap_drop:
+      - ALL
+    restart: always
+    sysctls:
+      net.ipv4.tcp_congestion_control: bbr
+    networks:
+      macvlan-ndt:
+        ipv4_address: "${IPV4}"
+        ipv6_address: "${IPV6}"
+      internal:
+    
+    # NOTE: All containers will use the same network and IP. All ports
+    # must be configured on the first service.
+    ports:
+      # ndt-server TLS and non-TLS ports.
+      - target: 4443
+        published: 4443
+        protocol: tcp
+        mode: bridge
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: bridge
+      # ndt-server prometheus.
+      - target: 9990
+        published: 9990
+        protocol: tcp
+        mode: bridge
+      # jostler prometheus.
+      - target: 9991
+        published: 9991
+        protocol: tcp
+        mode: bridge
+    command:
+      - -uuid-prefix-file=/schemas/uuid.prefix
+      - -cert=/certs/wildcard_medidor.rnp.br.cer
+      - -key=/certs/wildcard_medidor.rnp.br.key
+      - -datadir=/resultsdir/ndt
+      - -ndt7_addr=:4443
+      - -ndt7_addr_cleartext=:8080
+      # Allow ndt7 data to be autoloaded.
+      - -compress-results=false
+      # TODO: confirm device name.
+      - -txcontroller.device=eth0
+      - -txcontroller.max-rate=150000000
+      - -prometheusx.listen-address=:9990
+      # Add server metadata.
+      - -label=type=virtual
+      - -label=deployment=byos
+      # TODO: add helpful server location metadata labels.
+      - -label=region=TODO
+      # Effectively disable ndt5.
+      - -ndt5_addr=127.0.0.1:3002
+      - -ndt5_ws_addr=127.0.0.1:3001
+
+  # Generate the schemas needed by jostler.
+  generate-schemas:
+    image: measurementlab/ndt-server:v0.20.20
+    networks:
+      - internal
+    volumes:
+      - ./schemas:/schemas
+    entrypoint:
+    - /generate-schemas
+    - -ndt7=/schemas/ndt7.json
+
+  # Generate the uuid needed by the ndt-server.
+  generate-uuid:
+    image: measurementlab/uuid:v1.0.0
+    networks:
+      - internal
+    volumes:
+      - ./schemas:/schemas
+    command:
+      - -filename=/schemas/uuid.prefix
+
+networks:
+  internal:
+  macvlan-ndt:
+    external: true
+    name: ndt-server_macvlan-ndt
