@@ -104,7 +104,6 @@ export class TesterComponent implements OnInit {
     const dialogRef = this.dialog.open(WarningDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if (result) {
         this.startTests();
       }
@@ -118,10 +117,6 @@ export class TesterComponent implements OnInit {
   startTests() {
     if (typeof Worker !== 'undefined') {
       // Create a new
-
-      console.log(location.href);
-
-      //const worker = new Worker('./tester.worker', { type: 'module' });
       const worker = new Worker(new URL('./tester.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
 
@@ -148,8 +143,7 @@ export class TesterComponent implements OnInit {
         }
         //console.log(data.cmd);
       };
-      //worker.postMessage(location.href);
-      worker.postMessage("http://200.159.254.239/");
+      worker.postMessage(location.href);
 
     } else {
       // Web Workers are not supported in this environment.

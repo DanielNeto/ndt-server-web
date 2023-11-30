@@ -13,14 +13,12 @@ addEventListener('message', ({ data }) => {
 function startNDT(serverUrl: string) {
   var callbacks = {
     'onstart': function (type: string) {
-      console.log('test start');
       postMessage({
         'cmd': 'onstart',
         'type': type
       });
     },
     'onprogress': function (type: string, data: any) {
-      console.log('test running');
       postMessage({
         'cmd': 'onprogress',
         'type': type,
@@ -33,7 +31,6 @@ function startNDT(serverUrl: string) {
       lastServerResult = data;
     },
     'onfinish': function (type: string) {
-      console.log('test finished');
       if (type === 'download') {
 
         let retransmissions = lastServerResult.TCPInfo.BytesRetrans / lastServerResult.TCPInfo.BytesSent;
@@ -89,7 +86,6 @@ function startNDT(serverUrl: string) {
       }
     },
     'onerror': function (type: string) {
-      console.log('test error');
       postMessage({
         'cmd': 'onerror',
         'type': type
@@ -98,7 +94,6 @@ function startNDT(serverUrl: string) {
   };
 
   var client = new NDT7Client(serverUrl, callbacks);
-  console.log('test starting');
   client.runDownloadTest();
 }
 
