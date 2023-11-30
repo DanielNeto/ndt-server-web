@@ -1,13 +1,11 @@
 <mat-toolbar [style.background]="'#024298'">
   <mat-toolbar-row>
+    <div>
+      <button mat-mini-fab *ngFor="let language of languagesList; index as i" (click)="switchLang(language.code)">
+        <mat-icon [svgIcon]="language.icon"></mat-icon>
+      </button>
+    </div>
     <span class="center" style="color: white;">{{ 'SiteTitle' | translate }}</span>
-    <span class="form-inline">
-      <select class="form-control" #selectedLang (change)="switchLang(selectedLang.value)">
-        <option *ngFor="let language of translate.getLangs()" [value]="language" [selected]="language === translate.currentLang">
-          {{ language }}
-        </option>
-      </select>
-    </span>
   </mat-toolbar-row>
 </mat-toolbar>
 <app-tester></app-tester>
