@@ -1,4 +1,6 @@
-all: configure
+.PHONY: all clean
+
+all: configure build docker_build
 
 configure:
 	mkdir -p certs
@@ -6,11 +8,16 @@ configure:
 	mkdir -p resultsdir/ndt/ndt7/
 	mkdir -p schemas
 
-docker_build:
-	docker run -it --volume ./:/home/node/app --workdir /home/node/app node:20-alpine sh -c "npm install && npm install -g @angular/cli && ng build"
-
 build:
+	npm install
+	npm install @angular/cli
 	ng build
 	cp -r dist/ndt-server/browser/* html/
 	cp dist/ndt-server/3rdpartylicenses.txt html/
-	chmod 664 html/*
+
+docker_build:
+	docker compose -f docker-compose-full.yml build
+
+clean:
+	rm -fr dist/
+	rm -fr html/

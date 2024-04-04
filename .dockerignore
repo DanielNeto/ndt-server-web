@@ -1,0 +1,8 @@
+.angular
+.vscode
+
+dist/
+certs/
+node_modules/
+schemas/
+resultsdir/

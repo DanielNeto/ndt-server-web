@@ -2,10 +2,11 @@ version: '3.7'
 services:
   ndt-server:
     container_name: ndt-mlab
-    image: measurementlab/ndt-server:v0.20.20
+    image: danielneto/ndt-server-web:v0.20.20
+    build:
+      context: .
     volumes:
       - ./certs:/certs
-      - ./html:/html
       - ./schemas:/schemas
       - ./resultsdir:/resultsdir
     cap_drop:
