@@ -11,6 +11,11 @@ services:
     cap_drop:
       - ALL
     restart: always
+    depends_on:
+      generate-schemas:
+        condition: service_completed_successfully
+      generate-uuid:
+        condition: service_completed_successfully
     sysctls:
       net.ipv4.tcp_congestion_control: bbr
     networks:
@@ -75,6 +80,9 @@ services:
       - ./schemas:/schemas
       - ./certs:/certs
     network_mode: "service:ndt-server"
+    depends_on:
+      generate-schemas:
+        condition: service_completed_successfully
     environment:
       # TODO: reference service account credentials for upload to GCS.
       - GOOGLE_APPLICATION_CREDENTIALS=/certs/service-account-autojoin.json
