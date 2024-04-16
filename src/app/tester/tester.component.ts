@@ -3,15 +3,11 @@ import { CommonModule } from '@angular/common';
 import { NgxChartsModule, LegendPosition, Color, ScaleType } from '@swimlane/ngx-charts';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { WarningDialogComponent } from '../warning-dialog/warning-dialog.component';
-import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tester',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatButtonModule, MatDialogModule, WarningDialogComponent, ErrorDialogComponent, TranslateModule],
+  imports: [CommonModule, NgxChartsModule, MatButtonModule],
   templateUrl: './tester.component.html',
   styleUrl: './tester.component.scss',
   animations: [
@@ -35,15 +31,15 @@ export class TesterComponent implements OnInit {
   view: [number, number] = [350, 300];
   legend: boolean = true;
   legendPosition: LegendPosition = LegendPosition.Below;
-  legendTitle: string = 'Legend';
+  legendTitle: string = 'Legenda';
   showLabels: boolean = true;
   animations: boolean = true;
   xAxis: boolean = false;
   yAxis: boolean = true;
   showYAxisLabel: boolean = false;
   showXAxisLabel: boolean = false;
-  xAxisLabel: string = 'Duration';
-  yAxisLabel: string = 'Bandwidth';
+  xAxisLabel: string = 'Duração';
+  yAxisLabel: string = 'Banda';
   timeline: boolean = true;
 
   colorScheme: Color = {
@@ -89,8 +85,6 @@ export class TesterComponent implements OnInit {
   }
   graphLastValue: number = -1;
 
-  constructor(public dialog: MatDialog) {}
-
   ngOnInit(): void {
     let width = window.innerWidth;
     if (width > 700) {
@@ -100,33 +94,20 @@ export class TesterComponent implements OnInit {
     }
   }
 
-  openWarningDialog() {
-    const dialogRef = this.dialog.open(WarningDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.startTests();
-      }
-    });
-  }
-
-  openErrorDialog() {
-    this.dialog.open(ErrorDialogComponent);
-  }
-
   startTests() {
     if (typeof Worker !== 'undefined') {
       // Create a new
+
+      //console.log(location.href);
+      this.resetStats();
+      this.resetGraph();
+      this.graphLastValue = -1;
+      this.stateStart();
+
       const worker = new Worker(new URL('./tester.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
 
         switch (data.cmd) {
-          case 'onstart':
-            this.resetStats();
-            this.resetGraph();
-            this.graphLastValue = -1;
-            this.stateStart();
-            break;
           case 'onprogress':
             this.updateTestBW(data.type, data.data.Bytes, data.data.ElapsedTime);
             //do something with bytes and time
@@ -134,17 +115,18 @@ export class TesterComponent implements OnInit {
           case 'onfinish':
             this.updateFinalValues(data.type, data.data);
             //do something with final values
+
             break;
           case 'onerror':
-            this.openErrorDialog();
+            console.error("ERROR", data.type);
             break;
           default:
             break;
         }
         //console.log(data.cmd);
       };
-      worker.postMessage(location.href);
-
+      //worker.postMessage(location.href);
+      worker.postMessage('https://mg.medidor.rnp.br');
     } else {
       // Web Workers are not supported in this environment.
       // You should add a fallback so that your program still executes correctly.

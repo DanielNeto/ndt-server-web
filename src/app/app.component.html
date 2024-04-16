@@ -1,11 +1,6 @@
 <mat-toolbar [style.background]="'#024298'">
   <mat-toolbar-row>
-    <div>
-      <button mat-mini-fab *ngFor="let language of languagesList; index as i" (click)="switchLang(language.code)">
-        <mat-icon [svgIcon]="language.icon"></mat-icon>
-      </button>
-    </div>
-    <span class="center" style="color: white;">{{ 'SiteTitle' | translate }}</span>
+    <span class="center" style="color: white;">Medidor RNP</span>
   </mat-toolbar-row>
 </mat-toolbar>
 <app-tester></app-tester>
