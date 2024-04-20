@@ -154,7 +154,7 @@ export class TesterComponent implements OnInit {
 
   updateTestBW(test: string, bytes: number, time: number) {
 
-    let bw = (bytes * 8) / (time * 1000); //Mbps
+    let bw = (bytes * 8) / (time * 1000); //Mbps (time is in milliseconds)
 
     //if (environment.debugging) {
     //console.log("banda", test, bw, bytes, time);
